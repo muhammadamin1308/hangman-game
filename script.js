@@ -207,6 +207,7 @@ container.appendChild(leftContainer);
 
 let hangmanContainer = document.createElement('div');
 hangmanContainer.setAttribute('class', 'hangman-container');
+hangmanContainer.style.width = '400px'
 hangmanContainer.setAttribute('id', 'hangman-container');
 leftContainer.appendChild(hangmanContainer);
 
