@@ -1,149 +1,285 @@
-// Words
-let gameWords = [
-    { "id": 1, "word": "Planet", "hint": "Orbits a star." },
-    { "id": 2, "word": "Bridge", "hint": "Connects two places over a gap." },
-    { "id": 3, "word": "Jungle", "hint": "A dense forest with tropical plants." },
-    { "id": 4, "word": "Knight", "hint": "A medieval warrior." },
-    { "id": 5, "word": "Tunnel", "hint": "A passageway through or under something." },
-    { "id": 6, "word": "Puzzle", "hint": "A brain-teasing game or problem." },
-    { "id": 7, "word": "Anchor", "hint": "Used to hold a ship in place." },
-    { "id": 8, "word": "Falcon", "hint": "A fast bird of prey." },
-    { "id": 9, "word": "Island", "hint": "Land surrounded by water." },
-    { "id": 10, "word": "Crystal", "hint": "A shiny, transparent mineral." },
-    { "id": 11, "word": "Canyon", "hint": "A deep valley with steep sides." },
-    { "id": 12, "word": "Safari", "hint": "An adventure to see wild animals." },
-    { "id": 13, "word": "Cactus", "hint": "A spiky desert plant." },
-    { "id": 14, "word": "Comet", "hint": "A celestial object with a glowing tail." },
-    { "id": 15, "word": "Pirate", "hint": "A thief of the seas." },
-    { "id": 16, "word": "Rocket", "hint": "Launches into space." },
-    { "id": 17, "word": "Castle", "hint": "A medieval fortress." },
-    { "id": 18, "word": "Helmet", "hint": "Protects your head." },
-    { "id": 19, "word": "Mirror", "hint": "Reflects your image." },
-    { "id": 20, "word": "Lantern", "hint": "A portable light source." }
-]
-let gameWord = gameWords[Math.floor(Math.random() * gameWords.length)];
-
-let wordsCont = document.createElement('div');
-wordsCont.setAttribute('class', 'words-container container');
-document.body.appendChild(wordsCont);
-
-let actualWord = document.createElement('p')
-actualWord.innerHTML = gameWord.word
-actualWord.setAttribute('id', 'word');
-wordsCont.appendChild(actualWord)
-
-let word = gameWord.word.toLowerCase()
-let guessedWord = '_'.repeat(word.length).split("").join(' ')
-let secretKeyCont = document.createElement('div')
-secretKeyCont.setAttribute('class', 'secret-key-cont')
-wordsCont.appendChild(secretKeyCont)
-for (let i = 0; i < word.length; i++) {
-    let secret = document.createElement('p')
-    secret.setAttribute('id', `${word[i]}`);
-    secret.setAttribute('class', `shift-key`);
-    secret.innerText = '_'
-    secretKeyCont.appendChild(secret)
-}
-
-document.addEventListener('keydown', (event) => {
-    const pressedKey = event.key.toLowerCase();
-    const shiftKeys = document.querySelectorAll('.shift-key');
-    shiftKeys.forEach((letter, index) => {
-        if (letter.getAttribute('id') == pressedKey) {
-            shiftKeys[index].innerText = pressedKey
-        }
-    })
-    // counterIncrement()
-});
-
-let hintWord = document.createElement('h2')
-hintWord.innerHTML = `<span>Hint: </span>${gameWord.hint}`
-wordsCont.appendChild(hintWord)
-
-let incorrectWords = document.createElement('h3')
-incorrectWords.innerHTML = `Incorrect Words: <span style='color:red'> 0/6</span>`
-wordsCont.appendChild(incorrectWords)
-
-
-// Virtual Keyboard
-let alphabet = [
-    ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'],
-    ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l'],
-    ['z', 'x', 'c', 'v', 'b', 'n', 'm']
+const gameWords = [
+        { "id": 1, "word": "Planet", "hint": "Orbits a star." },
+        { "id": 2, "word": "Bridge", "hint": "Connects two places over a gap." },
+        { "id": 3, "word": "Ocean", "hint": "A vast body of saltwater." },
+        { "id": 4, "word": "Mountain", "hint": "A high, rocky landform." },
+        { "id": 5, "word": "Library", "hint": "A place filled with books." },
+        { "id": 6, "word": "Galaxy", "hint": "A system of stars and planets." },
+        { "id": 7, "word": "Pyramid", "hint": "An ancient triangular structure." },
+        { "id": 8, "word": "Desert", "hint": "A dry, sandy area with little rain." },
+        { "id": 9, "word": "Volcano", "hint": "Erupts with lava and ash." },
+        { "id": 10, "word": "Compass", "hint": "Helps you find direction." },
+        { "id": 11, "word": "Clock", "hint": "Tells the time." },
+        { "id": 12, "word": "Rainbow", "hint": "A colorful arc in the sky." },
+        { "id": 13, "word": "Candle", "hint": "Provides light when burned." },
+        { "id": 14, "word": "Guitar", "hint": "A musical instrument with strings." },
+        { "id": 15, "word": "Elephant", "hint": "A large animal with a trunk." },
+        { "id": 16, "word": "Telescope", "hint": "Used to see distant objects." },
+        { "id": 17, "word": "Bicycle", "hint": "A two-wheeled mode of transport." },
+        { "id": 18, "word": "Rocket", "hint": "Travels to space." },
+        { "id": 19, "word": "Jungle", "hint": "A dense, tropical forest." },
+        { "id": 20, "word": "Castle", "hint": "A large, fortified building." },
+        { "id": 21, "word": "Cloud", "hint": "Floats in the sky and holds water." },
+        { "id": 22, "word": "Tunnel", "hint": "A passageway through the ground." },
+        { "id": 23, "word": "Island", "hint": "A land surrounded by water." },
+        { "id": 24, "word": "Satellite", "hint": "Orbits planets and collects data." },
+        { "id": 25, "word": "Train", "hint": "Runs on tracks to transport people." },
+        { "id": 26, "word": "Whale", "hint": "A giant sea mammal." },
+        { "id": 27, "word": "Cave", "hint": "A hollow space in a rock or hill." },
+        { "id": 28, "word": "Lighthouse", "hint": "Guides ships with its light." },
+        { "id": 29, "word": "Meteor", "hint": "A space rock that burns in the sky." },
+        { "id": 30, "word": "Pencil", "hint": "Used for writing or drawing." },
+        { "id": 31, "word": "River", "hint": "A flowing body of water." },
+        { "id": 32, "word": "Map", "hint": "Shows locations and directions." },
+        { "id": 33, "word": "Ferris Wheel", "hint": "A giant rotating amusement ride." },
+        { "id": 34, "word": "Submarine", "hint": "Travels under the ocean." },
+        { "id": 35, "word": "Statue", "hint": "A carved or cast figure." },
+        { "id": 36, "word": "Moon", "hint": "Orbits a planet at night." },
+        { "id": 37, "word": "Waterfall", "hint": "Water flows down from a height." },
+        { "id": 38, "word": "Chimney", "hint": "Releases smoke from a house." },
+        { "id": 39, "word": "Scarecrow", "hint": "Placed in fields to scare birds." },
+        { "id": 40, "word": "Lantern", "hint": "A portable light source." },
+        { "id": 41, "word": "Dolphin", "hint": "A smart marine animal." },
+        { "id": 42, "word": "Caravan", "hint": "A mobile home on wheels." },
+        { "id": 43, "word": "Clocktower", "hint": "A tall building with a clock." },
+        { "id": 44, "word": "Igloo", "hint": "A dome-shaped snow house." },
+        { "id": 45, "word": "Harbor", "hint": "A dock for ships and boats." },
+        { "id": 46, "word": "Ferrari", "hint": "A luxury sports car brand." },
+        { "id": 47, "word": "Parachute", "hint": "Slows down falling speed." },
+        { "id": 48, "word": "Windmill", "hint": "Generates power from the wind." },
+        { "id": 49, "word": "Sculpture", "hint": "An artistic 3D object." },
+        { "id": 50, "word": "Glacier", "hint": "A massive frozen river of ice." }
 ];
-let rightCont = document.createElement('div')
-rightCont.setAttribute('class', 'right-container')
-document.body.appendChild(rightCont)
-let keyboardCont = document.createElement('div');
-keyboardCont.setAttribute('class', 'keyboard-container container');
-rightCont.appendChild(keyboardCont);
 
-window.onload = () => {
-    alphabet.forEach((row, keyIndex) => {
-        const keyboardUl = document.createElement('ul');
-        keyboardUl.setAttribute('class', 'keyboard-ul');
-        keyboardUl.setAttribute('id', `row-${keyIndex}`);
-        row.forEach((key) => {
-            const listItem = document.createElement("li");
-            listItem.setAttribute('id', `Key${key.toUpperCase()}`);
-            listItem.setAttribute('class', `key`);
-            listItem.textContent = `${key}`;
-            keyboardUl.appendChild(listItem);
+const alphabet = [
+    'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p',
+    'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l',
+    'z', 'x', 'c', 'v', 'b', 'n', 'm'
+];
 
-            listItem.addEventListener('click', () => {
-                simulateKeyPress(key)
-            })
+const allowedKeys = ['KeyQ', 'KeyW', 'KeyE', 'KeyR', 'KeyT', 'KeyY', 'KeyU', 'KeyI', 'KeyO', 'KeyP', 'KeyA', 'KeyS', 'KeyD', 'KeyF', 'KeyG', 'KeyH', 'KeyJ', 'KeyK', 'KeyL', 'KeyZ', 'KeyX', 'KeyC', 'KeyV', 'KeyB', 'KeyN', 'KeyM']
+
+class Game {
+    constructor() {
+        this.wordObj = gameWords[Math.floor(Math.random() * gameWords.length)];
+        this.word = this.wordObj.word;
+        this.hint = this.wordObj.hint;
+        this.secretWord = this.word.split('').map(() => '_');
+        this.guesses = [];
+        this.wrongGuesses = [];
+        this.wrongCount = 0;
+        this.maxWrongCount = 6;
+        this.foundWord = []
+    }
+
+    generateImg(parentEl) {
+        for (let i = 1; i <= this.maxWrongCount; i++) {
+            let images = document.createElement('img');
+            images.setAttribute('class', `hangman-${i}`)
+            images.setAttribute('src', `./source/hangman-${i}.png`)
+            images.setAttribute('alt', `hangman-${i}`)
+            parentEl.appendChild(images)
+        }
+    }
+
+    generateSecretLetters(parentEl) {
+        this.word.split('').forEach(letter => {
+            let secretLetter = document.createElement('p')
+            secretLetter.setAttribute('class', 'shift-key')
+            secretLetter.innerText = '_'
+            parentEl.appendChild(secretLetter)
         });
+    }
 
-        keyboardCont.appendChild(keyboardUl);
-    });
+    getHint(parentEl) {
+        parentEl.innerHTML = `<b>Hint: </b>${this.hint}`
+    }
 
-    function handleKeyEvent(event) {
-        const pressedKey = event.key.toLowerCase()
-        const shiftKeys = document.querySelectorAll('.shift-key');
+    generateKeyboard(parentEl) {
+        alphabet.forEach(letter => {
+            let keyboardLetter = document.createElement('li')
+            keyboardLetter.setAttribute('id', `Key${letter.toUpperCase()}`)
+            keyboardLetter.setAttribute('class', 'key')
+            keyboardLetter.innerText = letter
+            parentEl.appendChild(keyboardLetter)
+        });
+    }
+
+    keyboardClicked(letter) {
+        if (this.guesses.includes(letter) || this.wrongGuesses.includes(letter)) {
+            return;
+        }
+        if (!allowedKeys.includes(`Key${letter.toUpperCase()}`)) {
+            return;
+        }
         const liElements = document.querySelectorAll('.key');
-        //highlight pressed key
         liElements.forEach((li) => {
-            if (li.id == `Key${pressedKey.toUpperCase()}`) {
+            if (li.id == `Key${letter.toUpperCase()}`) {
                 li.style.backgroundColor = '#778da9';
             }
         })
+        if (this.word.toLowerCase().includes(letter)) {
+            this.guesses.push(letter)
+            this.revealLetter(letter)
+            this.checkForFullWord()
+        } else {
+            this.wrongCount++
+            this.wrongGuesses.push(letter)
+            this.updateHangmanImage()
+            this.updateCounter(wordsContainer)
+        }
+        if (this.wrongCount === this.maxWrongCount) {
+            this.endGame(false)
+        }
+    }
 
-        //reveal correct letter
-        shiftKeys.forEach((letter) => {
-            if (letter.getAttribute('id') === pressedKey) {
-                letter.innerText = pressedKey;
+    revealLetter(letter) {
+        const shiftKeys = document.querySelectorAll('.shift-key');
+        this.word.split('').forEach((char, index) => {
+            if (char.toLowerCase() === letter) {
+                shiftKeys[index].innerText = char;
             }
         });
     }
 
-    //simulate key press for the virtual keyboard
-    function simulateKeyPress(key) {
-        handleKeyEvent({ key })
-    }
-};
-
-//Physical Keyboard
-let keyDown = document.addEventListener('keydown', (event) => {
-    const liElements = document.querySelectorAll('.key');
-
-    liElements.forEach((li) => {
-        if (li.id == event.code) {
-            li.style.backgroundColor = '#778da9';
+    checkForFullWord() {
+        const wordCont = document.getElementById('secret-key-container')
+        if ([...wordCont.querySelectorAll(".shift-key")].every(li => li.innerText !== "_")) {
+            this.endGame(true);
         }
-    })
+    }
+
+    updateCounter() {
+        counter.innerHTML = `Wrong Letters:<span style='color:red'> ${this.wrongCount}/${this.maxWrongCount}</span>`
+
+    }
+
+    updateHangmanImage() {
+        const images = document.querySelectorAll('.hangman-container img');
+        images.forEach((img, index) => {
+            img.style.opacity = index < this.wrongCount + 1 ? '1' : '0';
+        });
+    }
+
+    showModal(message) {
+        const modalText = document.getElementById('message');
+        const modal = document.getElementById("modal");
+        const overlay = document.getElementById("overlay");
+        modalText.innerText = message;
+        modal.classList.remove("hidden");
+        overlay.classList.remove("hidden");
+    }
+
+    endGame(won) {
+        const message = won ? "Congratulations! You've won!" : `Game Over! The correct word was ${this.word}`;
+        this.showModal(message)
+        document.addEventListener('click', (event) => {
+            if (event.target.classList.contains('btn')) {
+                modal.classList.add("hidden");
+                overlay.classList.add("hidden");
+                this.showModal('')
+                this.resetGame()
+            }
+        })
+    }
+
+    resetGame() {
+        window.location.reload();
+    }
+}
+
+const game = new Game();
+
+// UI
+let heading = document.createElement('h1');
+heading.innerHTML = 'Hangman Game';
+heading.style.textAlign = 'center';
+heading.style.fontSize = '40px';
+document.body.appendChild(heading);
+
+let container = document.createElement('div');
+container.setAttribute('class', 'container');
+document.body.appendChild(container);
+
+let leftContainer = document.createElement('div');
+leftContainer.setAttribute('class', 'left-container');
+container.appendChild(leftContainer);
+
+let hangmanContainer = document.createElement('div');
+hangmanContainer.setAttribute('class', 'hangman-container');
+hangmanContainer.setAttribute('id', 'hangman-container');
+leftContainer.appendChild(hangmanContainer);
+
+let pillarImg = document.createElement('div');
+pillarImg.setAttribute('class', 'pillar');
+hangmanContainer.appendChild(pillarImg);
+pillarImg.innerHTML = '<img src="./source/pillar.png" alt="pillar" />'
+
+//Generate Images
+game.generateImg(hangmanContainer);
+
+let rightContainer = document.createElement('div');
+rightContainer.setAttribute('class', 'right-container');
+container.appendChild(rightContainer);
+
+let wordsContainer = document.createElement('div');
+wordsContainer.setAttribute('class', 'words-container');
+rightContainer.appendChild(wordsContainer);
+
+let secretWordContainer = document.createElement('div');
+secretWordContainer.setAttribute('class', 'secret-key-container');
+secretWordContainer.setAttribute('id', 'secret-key-container');
+wordsContainer.appendChild(secretWordContainer);
+
+//generate secret letters 
+game.generateSecretLetters(secretWordContainer);
+
+//Get hint
+let hint = document.createElement('h2');
+hint.setAttribute('id', 'hint');
+wordsContainer.appendChild(hint);
+
+game.getHint(hint);
+
+let counter = document.createElement('h3')
+counter.setAttribute('class', 'counter')
+wordsContainer.appendChild(counter)
+game.updateCounter(wordsContainer)
+
+let keyboardContainer = document.createElement('div');
+keyboardContainer.setAttribute('class', 'keyboard-container');
+keyboardContainer.setAttribute('id', 'keyboard-container');
+rightContainer.appendChild(keyboardContainer);
+//generate keyboard 
+game.generateKeyboard(keyboardContainer);
+
+document.addEventListener('keydown', (event) => {
+    const pressedKey = event.key.toLowerCase();
+    game.keyboardClicked(pressedKey);
+
 });
 
-// document.querySelector('.keyboard-container').appendChild(keyboardUl)
+document.querySelectorAll('.key').forEach(key => {
+    key.addEventListener('click', () => {
+        game.keyboardClicked(key.innerText);
+    });
+});
 
-// function counterIncrement(event) {
-//     let counter = 0
-//     const shiftKeys = document.querySelectorAll('.shift-key');
-//     shiftKeys.forEach((letter) => {
-//         if (letter.getAttribute('id').includes(letter.innerText.toLowerCase())) {
-//             console.log(letter.innerText)
-//         } else {
-//             console.log(counter++)
-//         }
-//     })
-// }
+
+
+let modal = document.createElement('div')
+modal.setAttribute('class', 'modal-section')
+
+modal.innerHTML = `  
+    <div id="modal" class="modal hidden">
+        <div>
+            <h3 id='message'></h3>
+        </div>
+        <button class="btn">Play Again</button>
+  </div> 
+  <div id='overlay' class="overlay hidden"></div>`
+
+document.body.appendChild(modal)
+
+
+
